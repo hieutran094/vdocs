@@ -1,0 +1,58 @@
+[
+    {
+        "id": "01F8MECHZX3TBDSZ7GV416YK08",
+        "title": "Automation testing with Playwright",
+        "image": "/images/autotesting.jpg",
+        "tag": "NodeJs",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "content": ""
+    },
+    {
+        "id": "01F8MECHZX3TBDSZ7GV416YK09",
+        "title": "Advanced NodeJs Techniques",
+        "image": "/images/nodejs_advanced.png",
+        "tag": "NodeJs",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "content": ""
+    },
+    {
+        "id": "01F8MECHZX3TBDSZ7GV416YK10",
+        "title": "Introduction to React",
+        "image": "/images/react_intro.jpg",
+        "tag": "ReactJs",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "content": ""
+    },
+    {
+        "id": "01F8MECHZX3TBDSZ7GV416YK11",
+        "title": "Building APIs with Express",
+        "image": "/images/express_api.png",
+        "tag": "NodeJs",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "content": ""
+    },
+    {
+        "id": "01F8MECHZX3TBDSZ7GV416YK12",
+        "title": "Mastering TypeScript",
+        "image": "/images/typescript_master.jpg",
+        "tag": "TypeScript",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "content": ""
+    },
+    {
+        "id": "01F8MECHZX3TBDSZ7GV416YK16",
+        "title": "Introduction to Docker",
+        "image": "/images/docker_intro.webp",
+        "tag": "DevOps",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "content": ""
+    },
+    {
+        "id": "01F8MECHZX3TBDSZ7GV416YK17",
+        "title": "CI/CD with Jenkins",
+        "image": "/images/jenkins_cicd.png",
+        "tag": "DevOps",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "content": ""
+    }
+]

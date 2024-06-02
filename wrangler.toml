@@ -1,0 +1,15 @@
+name = "devdocs"
+compatibility_date = "2024-05-29"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "devdocs"
+database_id = "e1550f93-2e54-4090-981a-7eee0dec2a68"
+migrations_table = "migrations"
+migrations_dir = "./src/migrations"
+
+[[kv_namespaces]]
+binding = "MY_KV"
+id = "<YOUR_KV_NAMESPACE_ID>"
