@@ -50,6 +50,13 @@ const createPostSchema = object({
     ),
 });
 
+const updatePostSchema = createPostSchema
+  .omit({ categoryIds: true })
+  .partial()
+  .extend({
+    id: string().ulid(),
+  });
+
 export async function login(_currentState: unknown, formData: FormData) {
   const validatedFields = schema.safeParse({
     email: formData.get('email'),
@@ -198,6 +205,73 @@ export async function createPost(_: unknown, formData: FormData) {
     };
   } catch (e) {
     const { message } = e as unknown as Error;
+    return {
+      success: false,
+      message: message || 'Internal Server Error',
+    };
+  }
+}
+export async function updatePost(_: unknown, formData: FormData) {
+  try {
+    const token = cookies().get('token');
+
+    if (!token?.value) {
+      return {
+        success: false,
+        message: 'Unauthorized',
+      };
+    }
+    await validationToken(token.value, process.env.APP_KEY!);
+    const file = formData.get('eyeCatchImageFile') as File;
+    if (!(file && file['size'] > 0)) {
+      formData.delete('eyeCatchImageFile');
+    }
+    const jsonData = formData2Json(formData);
+
+    const validatedFields = updatePostSchema.safeParse(jsonData);
+
+    if (!validatedFields.success) {
+      return {
+        success: false,
+        errors: validatedFields.error.flatten().fieldErrors,
+      };
+    }
+    const { data } = validatedFields;
+
+    const postId = data.id;
+    let r2Object;
+    if (data.eyeCatchImageFile) {
+      const uuid = crypto.randomUUID();
+      const raw = await data.eyeCatchImageFile.arrayBuffer();
+      const { name, type } = data.eyeCatchImageFile;
+      const extension = getFileExtension(name);
+      r2Object = await r2.put('/blog/images' + uuid + extension, raw, {
+        httpMetadata: { contentType: type },
+      });
+    }
+
+    try {
+      delete data.eyeCatchImageFile;
+      const postInsertQuery = db
+        .update(postTable)
+        .set({
+          ...data,
+          ...(r2Object ? { eyeCatchImageUrl: r2Object.key } : {}),
+        })
+        .where(eq(postTable.id, postId));
+      await db.batch([postInsertQuery]);
+    } catch (err) {
+      if (r2Object) await r2.delete(r2Object.key);
+      throw err;
+    }
+
+    return {
+      success: true,
+      message: 'Update post successfully',
+    };
+  } catch (e) {
+    const { message } = e as unknown as Error;
+    console.log(e);
     return {
       success: false,
       message: message || 'Internal Server Error',

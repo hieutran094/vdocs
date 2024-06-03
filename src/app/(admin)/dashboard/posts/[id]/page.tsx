@@ -27,7 +27,7 @@ export default async function AdminPostPage({
           <PostForm
             data={updateForm}
             categories={categories}
-            action="create"
+            action="update"
           ></PostForm>
         </div>
         <div className="w-[375px]"></div>

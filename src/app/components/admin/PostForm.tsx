@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import TextInput from '@/app/components/core/TextInput';
 import TextEditor from '@/app/components/core/TextEditor';
 import { useFormState } from 'react-dom';
-import { createPost } from '@/app/actions';
+import { createPost, updatePost } from '@/app/actions';
 import ImageInput from '@/app/components/core/ImageInput';
 import TextArea from '@/app/components/core/TextArea';
 import CheckBox from '@/app/components/core/CheckBox';
@@ -15,6 +15,7 @@ export const runtime = 'edge';
 
 interface IProps {
   data: {
+    id?: string;
     title: string;
     slug: string;
     metaTitle: string;
@@ -29,10 +30,13 @@ interface IProps {
 export default function PostForm(props: IProps) {
   const [formData, setFormData] = useState(props.data);
 
-  const [submitState, formAction] = useFormState(createPost, {
-    success: true,
-    message: '',
-  });
+  const [submitState, formAction] = useFormState(
+    props.action === 'create' ? createPost : updatePost,
+    {
+      success: true,
+      message: '',
+    }
+  );
 
   const handleTextEditorChange = useCallback((value: string) => {
     setFormData((prevState) => ({
@@ -72,10 +76,12 @@ export default function PostForm(props: IProps) {
         toast.error(submitState.message);
       }
     }
-    console.log(submitState);
   }, [submitState]);
   return (
     <form action={formAction} className="flex flex-col gap-y-5">
+      {props.action === 'update' && (
+        <input name="id" className="hidden" value={props.data.id}></input>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <TextInput
           name="title"
@@ -137,6 +143,7 @@ export default function PostForm(props: IProps) {
                 label={category.title}
                 value={category.id}
                 defaultChecked={formData.categoryIds.indexOf(category.id) > 0}
+                disabled={props.action === 'update'}
                 key={category.id}
               ></CheckBox>
             );

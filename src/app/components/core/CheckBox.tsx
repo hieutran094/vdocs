@@ -7,8 +7,8 @@ interface IProps {
   errorMessage?: any;
   required?: boolean;
   placeholder?: string;
-  readonly?: boolean;
   defaultChecked?: boolean;
+  disabled?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 export default function CheckBox(props: IProps) {
@@ -20,7 +20,7 @@ export default function CheckBox(props: IProps) {
         value={props.value}
         name={props.name}
         type="checkbox"
-        readOnly={props.readonly}
+        disabled={props.disabled}
         defaultChecked={props.defaultChecked}
         onChange={props.onChange}
         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded accent-cool-indigo-500 focus:ring-cool-indigo-500"
