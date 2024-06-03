@@ -11,34 +11,8 @@ export default function Header() {
   const { isOpenSidebar, setIsOpenSidebar } = useAppContext();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   return (
-    <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
-      <div className="ml-[6px]">
-        <div className="h-6 w-[224px] pt-1">
-          <a
-            className="text-xs font-normal text-gray-600 hover:underline dark:text-white dark:hover:text-white"
-            href=" "
-          >
-            Pages
-            <span className="mx-1 text-xs text-gray-600 hover:text-navy-700 dark:text-white">
-              /
-            </span>
-          </a>
-          <a
-            className="text-xs font-normal capitalize text-gray-600 hover:underline dark:text-white dark:hover:text-white"
-            href="/dashboard"
-          >
-            Main Dashboard
-          </a>
-        </div>
-        <p className="shrink text-2xl capitalize text-gray-700 dark:text-white">
-          <a
-            className="font-bold capitalize hover:text-gray-700 dark:hover:text-white"
-            href="/dashboard"
-          >
-            Main Dashboard
-          </a>
-        </p>
-      </div>
+    <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-end rounded-xl bg-white/20 p-2 backdrop-blur-xl">
+      
       <div className="relative mt-[3px] flex h-[56px] w-[355px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 md:w-[365px] md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
         <div className="flex h-full w-full items-center rounded-full bg-gray-50 text-gray-700">
           <p className="pl-3 pr-2 text-xl">
@@ -79,16 +53,16 @@ export default function Header() {
             <div className="flex h-auto w-56 flex-col justify-start rounded-xl bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 ">
               <div className="mt-3 ml-4">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-bold text-navy-700 dark:text-white">
+                  <p className="text-sm font-bold text-gray-600">
                     👋 Hey, Admin
                   </p>
                 </div>
               </div>
-              <div className="mt-3 h-px w-full bg-gray-200 dark:bg-white/20 "></div>
+              <div className="mt-3 h-px w-full bg-gray-200"></div>
               <div className="my-3 ml-4 flex flex-col">
                 <a
                   href=" "
-                  className="text-sm text-gray-800 dark:text-white hover:dark:text-white"
+                  className="text-sm text-gray-700"
                 >
                   Profile Settings
                 </a>

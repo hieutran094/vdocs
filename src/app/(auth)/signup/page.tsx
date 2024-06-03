@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import Link from 'next/link';
 import TextInput from '@/app/components/core/TextInput';
 import { signup } from '@/app/actions';
@@ -29,9 +29,11 @@ export default function SignUp() {
 
   useEffect(() => {
     if (data?.message) {
-      toast(data?.message, {
-        type: data.success ? 'success' : 'error',
-      });
+      if (data.success) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
     }
   }, [data]);
 
@@ -78,7 +80,7 @@ export default function SignUp() {
             <p className="text-xs font-light text-gray-500 dark:text-gray-400">
               I already have an account.
               <Link
-                href="/auth/login"
+                href="/login"
                 className="font-medium text-primary-600 hover:underline dark:text-primary-500"
               >
                 Try login

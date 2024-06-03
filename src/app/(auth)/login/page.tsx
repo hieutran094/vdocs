@@ -97,7 +97,7 @@ export default function Login() {
             <p className="text-xs font-light text-gray-500 dark:text-gray-400">
               Don’t have an account yet?
               <Link
-                href="/auth/signup"
+                href="/signup"
                 className="font-medium text-primary-600 hover:underline dark:text-primary-500"
               >
                 Sign up

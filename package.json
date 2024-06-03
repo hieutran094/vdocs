@@ -1,5 +1,5 @@
 {
-  "name": "vtester",
+  "name": "devdocs",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "migration:generate": "drizzle-kit generate",
-    "migration:up:local": "wrangler d1 migrations apply vtester --local",
+    "migration:up:local": "wrangler d1 migrations apply devdocs --local",
     "lint": "next lint",
     "test": "npx playwright test"
   },
@@ -42,6 +42,7 @@
     "react-dom": "^18.3.1",
     "react-quill": "^2.0.0",
     "react-toastify": "^10.0.5",
+    "slugify": "^1.6.6",
     "sonner": "^1.4.41",
     "ulidx": "^2.3.0",
     "zod": "^3.23.8"

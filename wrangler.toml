@@ -10,6 +10,7 @@ database_id = "e1550f93-2e54-4090-981a-7eee0dec2a68"
 migrations_table = "migrations"
 migrations_dir = "./src/migrations"
 
-[[kv_namespaces]]
-binding = "MY_KV"
-id = "<YOUR_KV_NAMESPACE_ID>"
+
+[[r2_buckets]]
+binding = 'BUCKET'
+bucket_name = 'devdocs'

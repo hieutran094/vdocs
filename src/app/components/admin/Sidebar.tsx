@@ -20,12 +20,12 @@ const routes = [
   {
     name: 'Posts',
     icon: <NewspaperIcon className="h-6 w-6"></NewspaperIcon>,
-    path: '/posts',
+    path: '/dashboard/posts',
   },
   {
     name: 'Profile',
     icon: <UserIcon className="h-6 w-6"></UserIcon>,
-    path: '/profile',
+    path: '/dashboard/profile',
   },
 ];
 

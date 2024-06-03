@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ToastContainer } from 'react-toastify';
 import { cookies } from 'next/headers';
-import 'react-toastify/dist/ReactToastify.css';
+import { Toaster } from 'sonner';
 import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
 import Sidebar from '@/app/components/admin/Sidebar';
@@ -25,11 +24,11 @@ export default function AuthLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="min-h-screen h-screen">
-          <ToastContainer></ToastContainer>
+          <Toaster position="top-right" richColors></Toaster>
           <AppProvider initToken={token?.value}>
-            <div className="flex w-full h-full overflow-hidden overflow-y-auto">
+            <div className="flex w-full min-h-full overflow-hidden overflow-y-auto">
               <Sidebar></Sidebar>
-              <div className="w-full h-full min-h-full bg-gray-50">
+              <div className="w-full min-h-full bg-[#F1F5F9]">
                 <main className="mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]">
                   <div className="h-full">
                     <Header></Header>

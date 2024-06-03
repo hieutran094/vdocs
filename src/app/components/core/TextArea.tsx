@@ -3,16 +3,15 @@ import { ChangeEventHandler, useId } from 'react';
 interface IProps {
   name: string;
   value: string;
-  type?: string;
   label?: string;
   errorMessage?: any;
   required?: boolean;
   placeholder?: string;
   readonly?: boolean;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
+  rows?: number;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
 }
-export default function TextInput(props: IProps) {
-  const { type = 'text' } = props;
+export default function TextArea(props: IProps) {
   const inputId = useId();
   return (
     <div className="w-full">
@@ -29,14 +28,14 @@ export default function TextInput(props: IProps) {
           )}{' '}
         </label>
       )}
-      <input
+      <textarea
         id={inputId}
         value={props.value}
-        type={type}
         name={props.name}
         placeholder={props.placeholder}
         readOnly={props.readonly}
         onChange={props.onChange}
+        rows={props.rows || 3}
         className="w-full bg-body py-2.5 px-3 text-sm rounded-lg border-[1.5px] border-stroke font-normal outline-none transition duration-150 focus:border-indigo-600 active:border-indigo-600"
       />
       {props.errorMessage && (

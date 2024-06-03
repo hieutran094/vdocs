@@ -1,15 +1,12 @@
-import { eq } from 'drizzle-orm';
-import { db } from '@/database';
-import { users } from '@/database/schema';
 import ArticleCard from '@/app/components/ArticleCard';
 import MiniArticleCard from '@/app/components/MiniArticleCard';
 import posts from '@/mocks/posts.json';
+import { getAllPost } from '../actions';
 
 export const runtime = 'edge';
 
 export default async function Page() {
-  const data = await db.select().from(users).where(eq(users.username, '1'));
-
+  const posts = await getAllPost();
   return (
     <>
       <div className="max-w-lg px-4 pt-5 mx-auto md:max-w-screen-2xl md:px-6 xl:px-8 2xl:px-12">

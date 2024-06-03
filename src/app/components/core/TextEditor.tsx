@@ -34,7 +34,7 @@ export default function TextEditor(props: IProps) {
         value={props.value}
         placeholder={props.placeholder}
         onChange={props.onChange}
-        className="w-full bg-white [&_.ql-container]:h-44 [&_.ql-container]:max-h-[550px] [&_.ql-editor]:text-gray-600 [&_.ql-container]:rounded-b-lg [&_.ql-container]:!border-gray-200 [&_.ql-container]:bg-white [&_.ql-toolbar]:rounded-t-lg [&_.ql-toolbar]:!border-gray-200"
+        className="w-full rounded-lg bg-white [&_.ql-container]:h-44 [&_.ql-container]:max-h-[550px] [&_.ql-editor]:text-gray-600 [&_.ql-container]:rounded-b-lg [&_.ql-container]:!border-gray-200 [&_.ql-container]:bg-white [&_.ql-toolbar]:rounded-t-lg [&_.ql-toolbar]:!border-gray-200"
       />
       {props.errorMessage && (
         <p className="text-xs text-red-500 mt-1">{props.errorMessage[0]}</p>
