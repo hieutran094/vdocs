@@ -9,6 +9,7 @@ interface IProps {
   required?: boolean;
   placeholder?: string;
   readonly?: boolean;
+  disabled?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 export default function TextInput(props: IProps) {
@@ -36,6 +37,7 @@ export default function TextInput(props: IProps) {
         name={props.name}
         placeholder={props.placeholder}
         readOnly={props.readonly}
+        disabled={props.disabled}
         onChange={props.onChange}
         className="w-full bg-body py-2.5 px-3 text-sm text-gray-600 rounded-lg border-[1.5px] border-stroke font-normal outline-none transition duration-150 focus:border-indigo-600 active:border-indigo-600"
       />

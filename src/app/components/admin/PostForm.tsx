@@ -96,7 +96,6 @@ export default function PostForm(props: IProps) {
           label="Slug"
           required={true}
           value={formData.slug}
-          readonly={true}
           errorMessage={submitState?.errors?.slug}
           onChange={handleInputChange}
         ></TextInput>
@@ -124,6 +123,7 @@ export default function PostForm(props: IProps) {
           value={formData.eyeCatchImageUrl}
           errorMessage={submitState?.errors?.eyeCatchImageFile}
           required={true}
+          onChange={() => {}}
         >
           <div className="w-full flex flex-col items-center px-5">
             <CloudArrowUpIcon className="w-8 h-8 text-gray-400" />
@@ -144,7 +144,8 @@ export default function PostForm(props: IProps) {
                 value={category.id}
                 defaultChecked={formData.categoryIds.indexOf(category.id) > 0}
                 disabled={props.action === 'update'}
-                key={category.id}
+                key={index}
+                onChange={() => {}}
               ></CheckBox>
             );
           })}

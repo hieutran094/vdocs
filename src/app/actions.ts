@@ -15,6 +15,7 @@ import {
 import { hmacPassword } from '@/utils/hmacPassword';
 import { getFileExtension, r2 } from '@/r2';
 import { formData2Json, validationToken } from '@/utils/common';
+import { checkAuth } from '@/libs/auth';
 
 const MAX_FILE_SIZE = 2000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -149,14 +150,11 @@ export async function getAllCategory() {
 
 export async function createPost(_: unknown, formData: FormData) {
   try {
-    const token = cookies().get('token');
-    if (!token) {
-      return {
-        success: false,
-        message: 'Unauthorized',
-      };
+    const loginUser = await checkAuth();
+
+    if (!loginUser) {
+      throw new Error('You must be signed in to perform this action');
     }
-    const loginUser = await validationToken(token.value, process.env.APP_KEY!);
     const jsonData = formData2Json(formData);
 
     const validatedFields = createPostSchema.safeParse(jsonData);
@@ -186,14 +184,13 @@ export async function createPost(_: unknown, formData: FormData) {
       const postInsertQuery = db.insert(postTable).values({
         ...data,
         id,
-        authorId: loginUser?.id,
+        authorId: loginUser.id,
         eyeCatchImageUrl: r2Object.key,
       });
       const postCategoriesQuery = db
         .insert(postCategoryTable)
         .values(postCategories);
       await db.batch([postInsertQuery, postCategoriesQuery]);
-      console.log(r2Object);
     } catch (err) {
       await r2.delete(r2Object.key);
       throw err;
@@ -213,15 +210,11 @@ export async function createPost(_: unknown, formData: FormData) {
 }
 export async function updatePost(_: unknown, formData: FormData) {
   try {
-    const token = cookies().get('token');
+    const loginUser = await checkAuth();
 
-    if (!token?.value) {
-      return {
-        success: false,
-        message: 'Unauthorized',
-      };
+    if (!loginUser) {
+      throw new Error('You must be signed in to perform this action');
     }
-    await validationToken(token.value, process.env.APP_KEY!);
     const file = formData.get('eyeCatchImageFile') as File;
     if (!(file && file['size'] > 0)) {
       formData.delete('eyeCatchImageFile');
@@ -271,7 +264,6 @@ export async function updatePost(_: unknown, formData: FormData) {
     };
   } catch (e) {
     const { message } = e as unknown as Error;
-    console.log(e);
     return {
       success: false,
       message: message || 'Internal Server Error',
@@ -297,6 +289,26 @@ export async function getOnePost(id: string) {
     ...post,
     categories: postCategories.map((el) => el.category),
   };
+}
+export async function deleteOnPost(id: string) {
+  try {
+    const loginUser = await checkAuth();
+
+    if (!loginUser) {
+      throw new Error('You must be signed in to perform this action');
+    }
+    await db.delete(postTable).where(eq(postTable.id, id));
+    return {
+      success: true,
+      message: 'Delete successfuly.',
+    };
+  } catch (e) {
+    const { message } = e as unknown as Error;
+    return {
+      success: false,
+      message: message || 'Internal Server Error',
+    };
+  }
 }
 export async function getAllPost() {
   return await db.select().from(postTable).all();

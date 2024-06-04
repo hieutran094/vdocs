@@ -4,7 +4,7 @@ export default function DataTable<T>(props: {
   columns: {
     name: string;
     selector?: (row: T) => any;
-    children?: (row: T) => ReactElement<{ row: T }>;
+    children?: (row: T, key: string) => ReactElement<{ row: T; key: string }>;
   }[];
   data: T[];
 }) {
@@ -22,15 +22,15 @@ export default function DataTable<T>(props: {
       <tbody>
         {props.data.map((row, index) => (
           <tr
-            key={index}
+            key={'row' + index}
             className="odd:bg-white odd:dark:bg-gray-700 even:bg-gray-50 even:dark:bg-gray-700 border-b"
           >
             {props.columns.map((col, cIndex) => {
               if (col.children) {
-                return col.children(row);
+                return col.children(row, 'cell' + index + cIndex);
               } else if (col.selector) {
                 return (
-                  <td key={cIndex} className="px-6 py-4">
+                  <td key={'cell' + index + cIndex} className="px-6 py-4">
                     {col.selector(row)}
                   </td>
                 );
