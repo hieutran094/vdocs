@@ -1,6 +1,29 @@
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 export default function Footer() {
+  const quickLink = [
+    {
+      name: 'Home',
+      link: '/',
+    },
+    {
+      name: 'Blog',
+      link: '/',
+    },
+    {
+      name: 'Pages',
+      link: '/',
+    },
+    {
+      name: 'Contact',
+      link: '/',
+    },
+    {
+      name: 'Admin channel',
+      link: '/dashboard',
+    },
+  ];
   return (
     <>
       <footer className="bg-gray-100">
@@ -29,10 +52,12 @@ export default function Footer() {
                   Quick Link
                 </h3>
                 <ul className="mt-5 text-sm text-gray-600">
-                  {[1, 2, 3, 4].map((_, index) => (
-                    <li key={index} className="py-1">
-                      Home
-                    </li>
+                  {quickLink.map((item, index) => (
+                    <Link href={item.link}>
+                      <li key={index} className="py-1">
+                        {item.name}
+                      </li>
+                    </Link>
                   ))}
                 </ul>
               </div>

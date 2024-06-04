@@ -1,12 +1,13 @@
 import ArticleCard from '@/app/components/ArticleCard';
 import MiniArticleCard from '@/app/components/MiniArticleCard';
 import posts from '@/mocks/posts.json';
-import { getAllPost } from '../actions';
+import { getAllCategory, getAllPost } from '../actions';
 
 export const runtime = 'edge';
 
 export default async function Page() {
   const posts = await getAllPost();
+  const categories = await getAllCategory();
   return (
     <>
       <div className="max-w-lg px-4 pt-5 mx-auto md:max-w-screen-2xl md:px-6 xl:px-8 2xl:px-12">
@@ -116,23 +117,21 @@ export default async function Page() {
                 </h2>
               </div>
               <div className="w-full flex flex-col gap-y-4">
-                {['NodeJs', 'ReactJs', 'VueJs', 'DevOps', 'Design'].map(
-                  (name, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="flex justify-between pt-1 pb-2 border-b border-gray-200"
-                      >
-                        <p className="text-sm font-semibold text-gray-600">
-                          {name}
-                        </p>
-                        <span className="px-1.5 py-1 rounded-lg text-xs font-semibold text-primary bg-primary/10">
-                          15
-                        </span>
-                      </div>
-                    );
-                  }
-                )}
+                {categories.map((category, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex justify-between pt-1 pb-2 border-b border-gray-200"
+                    >
+                      <p className="text-sm font-semibold text-gray-600">
+                        {category.title}
+                      </p>
+                      <span className="px-1.5 py-1 rounded-lg text-xs font-semibold text-primary bg-primary/10">
+                        15
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
