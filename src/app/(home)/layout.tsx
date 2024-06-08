@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
-import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'sonner';
 import { cookies } from 'next/headers';
-import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
+import Loading from '@/app/components/loading';
 
 export const metadata: Metadata = {
   title: 'DevDocs',
@@ -24,10 +25,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen overflow-hidden">
-          <ToastContainer></ToastContainer>
+        <div className="relative min-h-screen flex flex-col justify-between overflow-hidden">
+          <Toaster position="top-right" richColors></Toaster>
           <Header></Header>
-          <AppProvider initToken={token?.value}>{children}</AppProvider>
+          <AppProvider initToken={token?.value}>
+            <Suspense fallback={<Loading></Loading>}>
+              <div className="w-full">{children}</div>
+            </Suspense>
+          </AppProvider>
           <Footer></Footer>
         </div>
       </body>

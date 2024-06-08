@@ -6,6 +6,8 @@ import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
 import Sidebar from '@/app/components/admin/Sidebar';
 import Header from '@/app/components/admin/Header';
+import { Suspense } from 'react';
+import Loading from '@/app/components/loading';
 
 export const metadata: Metadata = {
   title: 'DevDocs - Admin',
@@ -26,17 +28,19 @@ export default function AuthLayout({
         <div className="min-h-screen h-screen">
           <Toaster position="top-right" richColors></Toaster>
           <AppProvider initToken={token?.value}>
-            <div className="flex w-full min-h-full overflow-hidden overflow-y-auto">
-              <Sidebar></Sidebar>
-              <div className="w-full min-h-full bg-[#F1F5F9]">
-                <main className="mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]">
-                  <div className="h-full">
-                    <Header></Header>
-                    {children}
-                  </div>
-                </main>
+            <Suspense fallback={<Loading></Loading>}>
+              <div className="flex w-full min-h-full overflow-hidden overflow-y-auto">
+                <Sidebar></Sidebar>
+                <div className="w-full min-h-full bg-[#F1F5F9]">
+                  <main className="mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]">
+                    <div className="h-full">
+                      <Header></Header>
+                      {children}
+                    </div>
+                  </main>
+                </div>
               </div>
-            </div>
+            </Suspense>
           </AppProvider>
         </div>
       </body>

@@ -1,13 +1,15 @@
 import ArticleCard from '@/app/components/ArticleCard';
 import MiniArticleCard from '@/app/components/MiniArticleCard';
-import posts from '@/mocks/posts.json';
-import { getAllCategory, getAllPost } from '../actions';
+import { getAllPost, searchCategory } from '../actions';
 
 export const runtime = 'edge';
 
 export default async function Page() {
   const posts = await getAllPost();
-  const categories = await getAllCategory();
+  const categories = await searchCategory({
+    limit: 5,
+    page: 1,
+  });
   return (
     <>
       <div className="max-w-lg px-4 pt-5 mx-auto md:max-w-screen-2xl md:px-6 xl:px-8 2xl:px-12">
@@ -127,7 +129,7 @@ export default async function Page() {
                         {category.title}
                       </p>
                       <span className="px-1.5 py-1 rounded-lg text-xs font-semibold text-primary bg-primary/10">
-                        15
+                        {category.totalPost}
                       </span>
                     </div>
                   );

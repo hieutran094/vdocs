@@ -1,6 +1,6 @@
 'use server';
-import { eq } from 'drizzle-orm';
-import { object, string, any } from 'zod';
+import { and, count, eq, inArray } from 'drizzle-orm';
+import zod, { object, string, any, number } from 'zod';
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { sign, verify, decode } from '@tsndr/cloudflare-worker-jwt';
@@ -24,6 +24,13 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/png',
   'image/webp',
 ];
+
+const baseQuerySchema = object({
+  limit: number().min(1).max(100).optional().default(10),
+  page: number().min(1).optional().default(1),
+});
+
+type BaseScheme = zod.infer<typeof baseQuerySchema>;
 
 const schema = object({
   email: string().min(1).email(),
@@ -146,6 +153,39 @@ export async function signup(_currentState: unknown, formData: FormData) {
 
 export async function getAllCategory() {
   return await db.select().from(categoryTable).all();
+}
+export async function searchCategory(query: BaseScheme) {
+  const categories = await db
+    .select()
+    .from(categoryTable)
+    .limit(query.limit)
+    .offset(query.limit * (query.page - 1));
+  if (categories.length === 0) return [];
+  const categoryPosts = await db
+    .select({
+      categoryId: postCategoryTable.categoryId,
+      postCount: count(postCategoryTable.postId),
+    })
+    .from(postCategoryTable)
+    .where(
+      inArray(
+        postCategoryTable.categoryId,
+        categories.map((el) => el.id)
+      )
+    )
+    .groupBy(postCategoryTable.categoryId);
+
+  const categoryPostsMap = new Map(
+    categoryPosts.map((i) => [i.categoryId, i.postCount])
+  );
+
+  return categories.map((el) => {
+    const totalPost = categoryPostsMap.get(el.id) || 0;
+    return {
+      ...el,
+      totalPost,
+    };
+  });
 }
 
 export async function createPost(_: unknown, formData: FormData) {

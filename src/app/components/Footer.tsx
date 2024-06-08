@@ -61,18 +61,7 @@ export default function Footer() {
                   ))}
                 </ul>
               </div>
-              <div>
-                <h3 className="text-md font-semibold text-gray-700">
-                  Category
-                </h3>
-                <ul className="mt-5 text-sm text-gray-600">
-                  {[1, 2, 3, 4].map((_, index) => (
-                    <li key={index} className="py-1">
-                      Home
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              
             </div>
             <div className="">
               <div className="p-6 rounded-2xl bg-white text-center">
