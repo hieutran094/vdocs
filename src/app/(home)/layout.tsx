@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { cookies } from 'next/headers';
 import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
 import Header from '@/app/components/Header';
-import Footer from '@/app/components/Footer';
-import Loading from '@/app/components/loading';
+import Footer from '@/app/components/Footer';;
 
 export const metadata: Metadata = {
   title: 'DevDocs',
@@ -29,9 +27,7 @@ export default function RootLayout({
           <Toaster position="top-right" richColors></Toaster>
           <Header></Header>
           <AppProvider initToken={token?.value}>
-            <Suspense fallback={<Loading></Loading>}>
               <div className="w-full">{children}</div>
-            </Suspense>
           </AppProvider>
           <Footer></Footer>
         </div>

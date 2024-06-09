@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Toaster } from 'sonner'
+import { Toaster } from 'sonner';
 import { cookies } from 'next/headers';
 import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
+import Loading from '@/app/components/loading';
 
 export const metadata: Metadata = {
   title: 'DevDocs - Authentication',
@@ -24,6 +25,7 @@ export default function AuthLayout({
         <div className="min-h-screen overflow-hidden">
           <Toaster position="top-right" richColors></Toaster>
           <AppProvider initToken={token?.value}>
+            <Loading />
             <div className="flex flex-col mt-12 md:mt-24 items-center justify-center px-6 py-8 mx-auto lg:py-0">
               <div className="flex">
                 <h1 className="-mt-15 mb-5 text-4xl font-extrabold tracking-tight font-display sm:text-3xl md:text-4xl xl:text-5xl">

@@ -1,4 +1,4 @@
-import { UserIcon } from '@heroicons/react/24/outline';
+import { PhotoIcon, UserIcon } from '@heroicons/react/24/outline';
 import cx from 'classnames';
 import Link from 'next/link';
 interface IProps {
@@ -51,3 +51,25 @@ export default function ArticleCard({ data, className }: IProps) {
     </div>
   );
 }
+
+ArticleCard.Skeleton = function PostItemSkeleton() {
+  return (
+    <div className="w-full flex flex-col aspect-square">
+      <div className="flex-1 w-full items-center justify-center h-48 mb-4 bg-gray-300 rounded-2xl"></div>
+      <div>
+        <div className="h-2.5 bg-slate-200 rounded-full w-48 mb-4"></div>
+        <div className="h-2 bg-slate-200 rounded-full mb-2.5"></div>
+        <div className="h-2 bg-slate-200 rounded-full mb-2.5"></div>
+        <div className="h-2 bg-slate-200 rounded-full"></div>
+        <div className="flex items-center mt-4">
+          <div className="w-10 h-10 me-3 bg-slate-200 rounded-full"></div>
+          <div>
+            <div className="h-2.5 bg-slate-200 rounded-full w-32 mb-2"></div>
+            <div className="w-48 h-2 bg-slate-200 rounded-full"></div>
+          </div>
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -2,7 +2,7 @@
 import { and, count, eq, inArray } from 'drizzle-orm';
 import zod, { object, string, any, number } from 'zod';
 import { cookies } from 'next/headers';
-import { notFound, redirect } from 'next/navigation';
+import { notFound, redirect, RedirectType } from 'next/navigation';
 import { sign, verify, decode } from '@tsndr/cloudflare-worker-jwt';
 import { ulid } from 'ulidx';
 import { db } from '@/database';
@@ -16,6 +16,7 @@ import { hmacPassword } from '@/utils/hmacPassword';
 import { getFileExtension, r2 } from '@/r2';
 import { formData2Json, validationToken } from '@/utils/common';
 import { checkAuth } from '@/libs/auth';
+import { revalidatePath } from 'next/cache';
 
 const MAX_FILE_SIZE = 2000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -115,7 +116,10 @@ export async function login(_currentState: unknown, formData: FormData) {
   cookies().set('token', token, {
     httpOnly: true,
   });
-  redirect('/dashboard');
+  return {
+    success: true,
+    message: '',
+  };
 }
 export async function signup(_currentState: unknown, formData: FormData) {
   try {
@@ -311,6 +315,7 @@ export async function updatePost(_: unknown, formData: FormData) {
   }
 }
 export async function getOnePost(id: string) {
+  await delay(20000);
   const [post] = await db
     .select()
     .from(postTable)
@@ -353,3 +358,7 @@ export async function deleteOnPost(id: string) {
 export async function getAllPost() {
   return await db.select().from(postTable).all();
 }
+
+const delay = (delayInms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, delayInms));
+};

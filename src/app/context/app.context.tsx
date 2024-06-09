@@ -4,7 +4,9 @@ import { createContext, useContext, useState } from 'react';
 const AppContext = createContext({
   token: '',
   isOpenSidebar: false,
+  isLoading: false,
   setIsOpenSidebar: (_isOpenSidebar: boolean) => {},
+  setIsLoading: (_isLoading: boolean) => {},
   setToken: (_token: string) => {},
 });
 
@@ -25,10 +27,17 @@ export default function AppProvider({
 }) {
   const [token, setToken] = useState(initToken);
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <AppContext.Provider
-      value={{ token, setToken, isOpenSidebar, setIsOpenSidebar }}
+      value={{
+        token,
+        setToken,
+        isOpenSidebar,
+        setIsOpenSidebar,
+        isLoading,
+        setIsLoading,
+      }}
     >
       {children}
     </AppContext.Provider>

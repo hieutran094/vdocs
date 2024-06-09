@@ -1,20 +1,31 @@
 'use client';
 
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useFormState } from 'react-dom';
+import {
+  ChangeEvent,
+  useActionState,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import TextInput from '@/app/components/core/TextInput';
 import { signup } from '@/app/actions';
+import { useAppContext } from '@/app/context/app.context';
+import { redirect } from 'next/navigation';
 
 export const runtime = 'edge';
 export default function SignUp() {
+  const { setIsLoading } = useAppContext();
   const [state, setState] = useState({
     email: '',
     password: '',
     username: '',
   });
-  const [data, dispatch] = useFormState(signup, undefined);
+  const [data, formAction, isPending] = useActionState(signup, {
+    success: false,
+    message: '',
+  });
   const { email, username, password } = state;
 
   const handlerInputChange = useCallback(
@@ -28,6 +39,13 @@ export default function SignUp() {
   );
 
   useEffect(() => {
+    setIsLoading(isPending);
+  }, [isPending]);
+
+  useEffect(() => {
+    if (data.success) {
+      redirect('/login');
+    }
     if (data?.message) {
       if (data.success) {
         toast.success(data.message);
@@ -45,7 +63,7 @@ export default function SignUp() {
             Sign up
           </h1>
 
-          <form className="space-y-4 md:space-y-6" action={dispatch}>
+          <form className="space-y-4 md:space-y-6" action={formAction}>
             <TextInput
               name="email"
               label="Email"

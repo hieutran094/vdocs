@@ -16,7 +16,9 @@ export async function POST(request: Request) {
       }
     );
   }
-  const password = await hmacPassword('123456' + process.env.APP_KEY);
+  const password = await hmacPassword(
+    process.env.SUPER_ADMIN_PASSWORD + process.env.APP_KEY
+  );
   await db
     .insert(userTable)
     .values({

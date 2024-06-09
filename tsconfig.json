@@ -28,7 +28,8 @@
     },
     "types": [
       "@cloudflare/workers-types/2023-07-01"
-    ]
+    ],
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",

@@ -6,8 +6,6 @@ import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
 import Sidebar from '@/app/components/admin/Sidebar';
 import Header from '@/app/components/admin/Header';
-import { Suspense } from 'react';
-import Loading from '@/app/components/loading';
 
 export const metadata: Metadata = {
   title: 'DevDocs - Admin',
@@ -34,9 +32,7 @@ export default function AuthLayout({
                 <main className="mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]">
                   <div className="h-full">
                     <Header></Header>
-                    <Suspense fallback={<Loading></Loading>}>
-                      {children}
-                    </Suspense>
+                    {children}
                   </div>
                 </main>
               </div>

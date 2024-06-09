@@ -10,6 +10,7 @@ interface IProps {
   placeholder?: string;
   readonly?: boolean;
   disabled?: boolean;
+  autoComplete?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 export default function TextInput(props: IProps) {
@@ -39,6 +40,7 @@ export default function TextInput(props: IProps) {
         readOnly={props.readonly}
         disabled={props.disabled}
         onChange={props.onChange}
+        autoComplete={props.autoComplete || 'off'}
         className="w-full bg-body py-2.5 px-3 text-sm text-gray-600 rounded-lg border-[1.5px] border-stroke font-normal outline-none transition duration-150 focus:border-indigo-600 active:border-indigo-600"
       />
       {props.errorMessage && (

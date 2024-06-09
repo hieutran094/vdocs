@@ -1,19 +1,30 @@
 'use client';
 
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useFormState } from 'react-dom';
+import {
+  ChangeEvent,
+  useActionState,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import TextInput from '@/app/components/core/TextInput';
 import { login } from '@/app/actions';
+import { useAppContext } from '@/app/context/app.context';
+import { redirect } from 'next/navigation';
 
 export const runtime = 'edge';
 export default function Login() {
+  const { setIsLoading } = useAppContext();
   const [state, setState] = useState({
     email: '',
     password: '',
   });
-  const [data, dispatch] = useFormState(login, undefined);
+  const [data, formAction, isPending] = useActionState(login, {
+    success: false,
+    message: '',
+  });
   const { email, password } = state;
 
   const handlerInputChange = useCallback(
@@ -27,6 +38,13 @@ export default function Login() {
   );
 
   useEffect(() => {
+    setIsLoading(isPending);
+  }, [isPending]);
+
+  useEffect(() => {
+    if (data.success) {
+      redirect('/dashboard');
+    }
     if (data?.message) {
       if (data.success) {
         toast.success(data.message);
@@ -44,12 +62,13 @@ export default function Login() {
             Sign in
           </h1>
 
-          <form className="space-y-4 md:space-y-6" action={dispatch}>
+          <form className="space-y-4 md:space-y-6" action={formAction}>
             <TextInput
               name="email"
               label="Email"
               value={email}
               placeholder="name@gmail.com"
+              autoComplete="username"
               errorMessage={data?.errors?.email}
               onChange={handlerInputChange}
             ></TextInput>
@@ -59,6 +78,7 @@ export default function Login() {
               value={password}
               placeholder="••••••••"
               type="password"
+              autoComplete="current-password"
               errorMessage={data?.errors?.password}
               onChange={handlerInputChange}
             ></TextInput>
