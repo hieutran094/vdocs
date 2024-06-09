@@ -28,19 +28,19 @@ export default function AuthLayout({
         <div className="min-h-screen h-screen">
           <Toaster position="top-right" richColors></Toaster>
           <AppProvider initToken={token?.value}>
-            <Suspense fallback={<Loading></Loading>}>
-              <div className="flex w-full min-h-full overflow-hidden overflow-y-auto">
-                <Sidebar></Sidebar>
-                <div className="w-full min-h-full bg-[#F1F5F9]">
-                  <main className="mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]">
-                    <div className="h-full">
-                      <Header></Header>
+            <div className="flex w-full min-h-full overflow-hidden overflow-y-auto">
+              <Sidebar></Sidebar>
+              <div className="w-full min-h-full bg-[#F1F5F9]">
+                <main className="mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]">
+                  <div className="h-full">
+                    <Header></Header>
+                    <Suspense fallback={<Loading></Loading>}>
                       {children}
-                    </div>
-                  </main>
-                </div>
+                    </Suspense>
+                  </div>
+                </main>
               </div>
-            </Suspense>
+            </div>
           </AppProvider>
         </div>
       </body>

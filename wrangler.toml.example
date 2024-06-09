@@ -6,7 +6,7 @@ pages_build_output_dir = ".vercel/output/static"
 [[d1_databases]]
 binding = "DB"
 database_name = "devdocs"
-database_id = "e1550f93-2e54-4090-981a-7eee0dec2a68"
+database_id = "xxxxx"
 migrations_table = "migrations"
 migrations_dir = "./src/migrations"
 
