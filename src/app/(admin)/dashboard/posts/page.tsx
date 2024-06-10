@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { useCallback, useEffect, useState } from 'react';
 import { deleteOnPost } from '@/app/actions';
 import { getAllPost } from '@/app/actions';
 import DataTable from '@/app/components/core/DataTable';
-import { useCallback, useEffect, useState } from 'react';
+import { useAppContext } from '@/app/context/app.context';
 
 export const runtime = 'edge';
 
@@ -12,6 +13,7 @@ function RowAction(props: {
   row: { id: string };
   onResponse?: (res: { success: boolean; message: string }) => void;
 }) {
+  const { setIsLoading } = useAppContext();
   return (
     <td className="flex px-6 py-4 gap-x-3">
       <Link
@@ -22,8 +24,10 @@ function RowAction(props: {
       </Link>
       <button
         onClick={async () => {
+          setIsLoading(true);
           const response = await deleteOnPost(props.row.id);
           if (props.onResponse) props.onResponse(response);
+          setIsLoading(false);
         }}
         className="font-medium text-red-500 hover:underline"
       >
@@ -34,13 +38,16 @@ function RowAction(props: {
 }
 
 export default function AdminPostPage() {
+  const { setIsLoading } = useAppContext();
   const [posts, setPosts] = useState<Awaited<ReturnType<typeof getAllPost>>>(
     []
   );
 
   const getPosts = useCallback(async () => {
+    setIsLoading(true);
     const result = await getAllPost();
     setPosts(result);
+    setIsLoading(false);
   }, []);
   type TTableRow = (typeof posts)[0];
   const columns = [

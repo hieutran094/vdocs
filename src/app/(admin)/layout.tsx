@@ -6,6 +6,7 @@ import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
 import Sidebar from '@/app/components/admin/Sidebar';
 import Header from '@/app/components/admin/Header';
+import Loading from '@/app/components/Loading';
 
 export const metadata: Metadata = {
   title: 'DevDocs - Admin',
@@ -23,10 +24,11 @@ export default function AuthLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen h-screen">
+        <div className="min-h-screen h-full">
           <Toaster position="top-right" richColors></Toaster>
           <AppProvider initToken={token?.value}>
-            <div className="flex w-full min-h-full overflow-hidden overflow-y-auto">
+            <Loading />
+            <div className="flex w-full h-full min-h-[inherit] overflow-hidden overflow-y-auto">
               <Sidebar></Sidebar>
               <div className="w-full min-h-full bg-[#F1F5F9]">
                 <main className="mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]">

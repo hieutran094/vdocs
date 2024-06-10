@@ -10,6 +10,9 @@ import { createPost, updatePost } from '@/app/actions';
 import ImageInput from '@/app/components/core/ImageInput';
 import TextArea from '@/app/components/core/TextArea';
 import CheckBox from '@/app/components/core/CheckBox';
+import Button from '@/app/components/core/Button';
+import { useAppContext } from '@/app/context/app.context';
+import { redirect } from 'next/navigation';
 
 export const runtime = 'edge';
 
@@ -28,6 +31,7 @@ interface IProps {
   action: 'create' | 'update';
 }
 export default function PostForm(props: IProps) {
+  const { setIsLoading } = useAppContext();
   const [formData, setFormData] = useState(props.data);
 
   const [submitState, formAction] = useFormState(
@@ -72,6 +76,7 @@ export default function PostForm(props: IProps) {
     if (submitState?.message) {
       if (submitState.success) {
         toast.success(submitState.message);
+        redirect('/dashboard/posts');
       } else {
         toast.error(submitState.message);
       }
@@ -170,12 +175,7 @@ export default function PostForm(props: IProps) {
         errorMessage={submitState?.errors?.content}
       ></TextEditor>
 
-      <button
-        type="submit"
-        className="items-center h-10 px-4 py-2 text-sm text-white transition duration-300 ease-in-out rounded-lg outline-none right-1 top-1 bg-cool-indigo-600 md:px-6 sm:font-medium hover:bg-cool-indigo-700 focus:outline-none focus:ring-1 focus:ring-cool-indigo-500"
-      >
-        Save
-      </button>
+      <Button onLoading={setIsLoading}>Save</Button>
     </form>
   );
 }

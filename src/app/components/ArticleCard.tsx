@@ -17,14 +17,14 @@ export default function ArticleCard({ data, className }: IProps) {
       <div className="relative flex items-center justify-center flex-shrink-0 h-full group">
         <img
           className="w-auto h-full rounded-lg shadow-md mx-auto object-cover transition ease-in-out duration-300"
-          alt="Cruip Bundle"
+          alt="Post cover image"
           src={data.eyeCatchImageUrl}
         />
         <div className="absolute inset-0 transition duration-200 bg-gray-700 rounded-2xl opacity-50"></div>
         <div className="absolute inset-0 flex items-end transition duration-200 opacity-100">
           <div className="flex flex-col justify-between flex-1 px-3 pb-3 @xs:px-6 @xs:pb-6 text-white">
             <div className="flex-1">
-              <Link className="block group" href={`/posts/${data.id}`}>
+              <Link className="block group" href={`/posts/${data.slug}`}>
                 <span className="px-2 py-1 bg-cool-indigo-500 rounded-lg text-xs">
                   {data.tag || 'nodejs'}
                 </span>

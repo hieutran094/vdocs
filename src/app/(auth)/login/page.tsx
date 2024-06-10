@@ -1,18 +1,13 @@
 'use client';
 
-import {
-  ChangeEvent,
-  useActionState,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
 import TextInput from '@/app/components/core/TextInput';
 import { login } from '@/app/actions';
 import { useAppContext } from '@/app/context/app.context';
-import { redirect } from 'next/navigation';
+import Button from '@/app/components/core/Button';
 
 export const runtime = 'edge';
 export default function Login() {
@@ -21,7 +16,7 @@ export default function Login() {
     email: '',
     password: '',
   });
-  const [data, formAction, isPending] = useActionState(login, {
+  const [data, formAction] = useFormState(login, {
     success: false,
     message: '',
   });
@@ -38,13 +33,6 @@ export default function Login() {
   );
 
   useEffect(() => {
-    setIsLoading(isPending);
-  }, [isPending]);
-
-  useEffect(() => {
-    if (data.success) {
-      redirect('/dashboard');
-    }
     if (data?.message) {
       if (data.success) {
         toast.success(data.message);
@@ -108,12 +96,7 @@ export default function Login() {
                 Forgot password?
               </a>
             </div>
-            <button
-              type="submit"
-              className="w-full text-white bg-cool-indigo-600 hover:bg-cool-indigo-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            >
-              Sign in
-            </button>
+            <Button onLoading={setIsLoading}>Sign in</Button>
             <p className="text-xs font-light text-gray-500 dark:text-gray-400">
               Don’t have an account yet?
               <Link

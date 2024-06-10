@@ -4,7 +4,7 @@ import { Toaster } from 'sonner';
 import { cookies } from 'next/headers';
 import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
-import Loading from '@/app/components/loading';
+import Loading from '@/app/components/Loading';
 
 export const metadata: Metadata = {
   title: 'DevDocs - Authentication',

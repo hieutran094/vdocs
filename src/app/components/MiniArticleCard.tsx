@@ -15,8 +15,8 @@ export default function MiniArticleCard({ data, className }: IProps) {
     >
       <img
         className="w-24 h-24 rounded-lg shadow-md mx-auto object-cover transition ease-in-out duration-300"
-        alt="Cruip Bundle"
-        src={data.image}
+        alt="Post cover image"
+        src={data.eyeCatchImageUrl}
       />
       <div className="flex flex-col justify-between flex-1">
         <div className="flex-1">

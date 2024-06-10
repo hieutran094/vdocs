@@ -2,7 +2,6 @@
 
 import {
   ChangeEvent,
-  useActionState,
   useCallback,
   useEffect,
   useState,
@@ -13,6 +12,8 @@ import TextInput from '@/app/components/core/TextInput';
 import { signup } from '@/app/actions';
 import { useAppContext } from '@/app/context/app.context';
 import { redirect } from 'next/navigation';
+import { useFormState } from 'react-dom';
+import Button from '@/app/components/core/Button';
 
 export const runtime = 'edge';
 export default function SignUp() {
@@ -22,7 +23,7 @@ export default function SignUp() {
     password: '',
     username: '',
   });
-  const [data, formAction, isPending] = useActionState(signup, {
+  const [data, formAction] = useFormState(signup, {
     success: false,
     message: '',
   });
@@ -37,10 +38,6 @@ export default function SignUp() {
     },
     []
   );
-
-  useEffect(() => {
-    setIsLoading(isPending);
-  }, [isPending]);
 
   useEffect(() => {
     if (data.success) {
@@ -89,12 +86,7 @@ export default function SignUp() {
               errorMessage={data?.errors?.password}
               onChange={handlerInputChange}
             ></TextInput>
-            <button
-              type="submit"
-              className="w-full text-white bg-cool-indigo-600 hover:bg-cool-indigo-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            >
-              Sign up
-            </button>
+            <Button onLoading={setIsLoading}>Sign up</Button>
             <p className="text-xs font-light text-gray-500 dark:text-gray-400">
               I already have an account.
               <Link

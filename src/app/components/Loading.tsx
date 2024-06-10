@@ -4,11 +4,9 @@ import { useAppContext } from '@/app/context/app.context';
 
 export default function Loading() {
   const { isLoading } = useAppContext();
-  
-
   return (
     isLoading && (
-      <div className="absolute inset-0 bg-transparent z-70 h-full w-full flex items-center justify-center">
+      <div className="fixed inset-0 bg-transparent z-50 flex items-center justify-center">
         <div className="flex justify-center items-center h-screen">
           <div className="relative inline-flex justify-center items-center w-[80px] h-[80px] bg-gray-800 rounded-2xl text-white">
             <svg

@@ -1,5 +1,5 @@
 'use client';
-
+export const runtime = 'edge';
 export default function Dashboard() {
   return (
     <div className="pt-5s mx-auto mb-auto p-2 md:pr-2">

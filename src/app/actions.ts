@@ -2,7 +2,7 @@
 import { and, count, eq, inArray } from 'drizzle-orm';
 import zod, { object, string, any, number } from 'zod';
 import { cookies } from 'next/headers';
-import { notFound, redirect, RedirectType } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { sign, verify, decode } from '@tsndr/cloudflare-worker-jwt';
 import { ulid } from 'ulidx';
 import { db } from '@/database';
@@ -16,9 +16,9 @@ import { hmacPassword } from '@/utils/hmacPassword';
 import { getFileExtension, r2 } from '@/r2';
 import { formData2Json, validationToken } from '@/utils/common';
 import { checkAuth } from '@/libs/auth';
-import { revalidatePath } from 'next/cache';
 
 const MAX_FILE_SIZE = 2000000;
+const CDN_URL = process.env.CDN_URL || '';
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/jpg',
@@ -71,7 +71,6 @@ export async function login(_currentState: unknown, formData: FormData) {
     email: formData.get('email'),
     password: formData.get('password'),
   });
-
   if (!validatedFields.success) {
     return {
       success: false,
@@ -116,10 +115,7 @@ export async function login(_currentState: unknown, formData: FormData) {
   cookies().set('token', token, {
     httpOnly: true,
   });
-  return {
-    success: true,
-    message: '',
-  };
+  redirect('/dashboard');
 }
 export async function signup(_currentState: unknown, formData: FormData) {
   try {
@@ -215,7 +211,7 @@ export async function createPost(_: unknown, formData: FormData) {
     const raw = await data.eyeCatchImageFile.arrayBuffer();
     const { name, type } = data.eyeCatchImageFile;
     const extension = getFileExtension(name);
-    const r2Object = await r2.put('/blog/images' + uuid + extension, raw, {
+    const r2Object = await r2.put('blog/images/' + uuid + extension, raw, {
       httpMetadata: { contentType: type },
     });
     try {
@@ -239,7 +235,6 @@ export async function createPost(_: unknown, formData: FormData) {
       await r2.delete(r2Object.key);
       throw err;
     }
-
     return {
       success: true,
       message: 'Create new post successfully',
@@ -282,7 +277,7 @@ export async function updatePost(_: unknown, formData: FormData) {
       const raw = await data.eyeCatchImageFile.arrayBuffer();
       const { name, type } = data.eyeCatchImageFile;
       const extension = getFileExtension(name);
-      r2Object = await r2.put('/blog/images' + uuid + extension, raw, {
+      r2Object = await r2.put('blog/images/' + uuid + extension, raw, {
         httpMetadata: { contentType: type },
       });
     }
@@ -315,7 +310,6 @@ export async function updatePost(_: unknown, formData: FormData) {
   }
 }
 export async function getOnePost(id: string) {
-  await delay(20000);
   const [post] = await db
     .select()
     .from(postTable)
@@ -332,6 +326,35 @@ export async function getOnePost(id: string) {
   });
   return {
     ...post,
+    eyeCatchImageUrl: CDN_URL + post.eyeCatchImageUrl,
+    categories: postCategories.map((el) => el.category),
+  };
+}
+export async function getOnePostBySlug(slug: string) {
+  const post = await db.query.postTable.findFirst({
+    with: {
+      author: {
+        columns: {
+          username: true,
+          imageUrl: true,
+        },
+      },
+    },
+    where: eq(postTable.slug, slug),
+  });
+
+  if (!post) {
+    return notFound();
+  }
+  const postCategories = await db.query.postCategoryTable.findMany({
+    with: {
+      category: true,
+    },
+    where: eq(postCategoryTable.postId, post.id),
+  });
+  return {
+    ...post,
+    eyeCatchImageUrl: CDN_URL + post.eyeCatchImageUrl,
     categories: postCategories.map((el) => el.category),
   };
 }
@@ -356,7 +379,13 @@ export async function deleteOnPost(id: string) {
   }
 }
 export async function getAllPost() {
-  return await db.select().from(postTable).all();
+  const posts = await db.select().from(postTable).all();
+  return posts.map((post) => {
+    return {
+      ...post,
+      eyeCatchImageUrl: CDN_URL + post.eyeCatchImageUrl,
+    };
+  });
 }
 
 const delay = (delayInms: number) => {

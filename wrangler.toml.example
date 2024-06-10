@@ -3,6 +3,11 @@ compatibility_date = "2024-05-29"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
+[vars]
+APP_KEY="xxxxxxxxxxxxxxxxx"
+SUPER_ADMIN_PASSWORD="xxxxxx"
+CDN_URL="https://cdn.example.com/"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "devdocs"
