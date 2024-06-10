@@ -54,7 +54,7 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="w-full bg-gray-100 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
+      <div className="w-full bg-gray-100 rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-xl">
             Sign up
@@ -87,11 +87,11 @@ export default function SignUp() {
               onChange={handlerInputChange}
             ></TextInput>
             <Button onLoading={setIsLoading}>Sign up</Button>
-            <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+            <p className="text-xs font-light text-gray-500">
               I already have an account.
               <Link
                 href="/login"
-                className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                className="font-medium text-primary-600 hover:underline"
               >
                 Try login
               </Link>

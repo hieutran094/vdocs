@@ -17,7 +17,7 @@ export default function TextEditor(props: IProps) {
     <div className="w-full">
       {props.label && (
         <label
-          className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
+          className="mb-2 block text-sm font-semibold text-gray-700"
           htmlFor={inputId}
         >
           {props.label}

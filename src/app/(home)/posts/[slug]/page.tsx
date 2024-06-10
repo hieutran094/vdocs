@@ -22,13 +22,13 @@ export default async function PostDetail({
   return (
     <div className="max-w-lg px-4 pt-5 mx-auto md:max-w-screen-2xl md:px-6 xl:px-8 2xl:px-12">
       <div className="relative max-w-2xl mx-auto">
-        <div className="flex justify-center items-center space-x-3 text-gray-500 dark:text-gray-400"></div>
+        <div className="flex justify-center items-center space-x-3 text-gray-500"></div>
         <div className="text-center">
-          <h1 className="text-gray-800 pt-4 dark:text-white font-bold text-2xl md:text-3xl lg:text-4xl">
+          <h1 className="text-gray-800 pt-4 font-bold text-2xl md:text-3xl lg:text-4xl">
             {post.title}
           </h1>
         </div>
-        <div className="flex justify-center flex-wrap items-center pt-3 space-x-3 text-gray-500 dark:text-gray-400">
+        <div className="flex justify-center flex-wrap items-center pt-3 space-x-3 text-gray-500">
           <a
             aria-current="page"
             href="/"
@@ -39,11 +39,11 @@ export default async function PostDetail({
             </span>
             By {post.author?.username}
           </a>
-          <span className="text-xs text-gray-300 dark:text-gray-600">•</span>
+          <span className="text-xs text-gray-300">•</span>
           <time className="truncate text-sm">
             {new Date(post.createdAt!).toLocaleString([],{ dateStyle: 'short', timeStyle: 'short' })}
           </time>
-          <span className="text-xs text-gray-300 dark:text-gray-600">•</span>
+          <span className="text-xs text-gray-300">•</span>
           <Link
             href="/"
             className="router-link-active router-link-exact-active flex items-center text-sm w-max"

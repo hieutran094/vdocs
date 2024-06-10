@@ -44,7 +44,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="w-full bg-gray-100 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
+      <div className="w-full bg-gray-100 rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-lg font-bold leading-tight tracking-tight text-gray-700 md:text-xl">
             Sign in
@@ -77,13 +77,13 @@ export default function Login() {
                     id="remember"
                     aria-describedby="remember"
                     type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
                   />
                 </div>
                 <div className="ml-3 text-sm">
                   <label
                     htmlFor="remember"
-                    className="text-gray-500 dark:text-gray-300"
+                    className="text-gray-500"
                   >
                     Remember me
                   </label>
@@ -91,17 +91,17 @@ export default function Login() {
               </div>
               <a
                 href="#"
-                className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                className="text-sm font-medium text-primary-600 hover:underline"
               >
                 Forgot password?
               </a>
             </div>
             <Button onLoading={setIsLoading}>Sign in</Button>
-            <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+            <p className="text-xs font-light text-gray-500">
               Don’t have an account yet?
               <Link
                 href="/signup"
-                className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                className="font-medium text-primary-600 hover:underline"
               >
                 Sign up
               </Link>

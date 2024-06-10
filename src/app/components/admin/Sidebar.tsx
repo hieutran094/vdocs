@@ -36,7 +36,7 @@ export default function Sidebar() {
   return (
     <div
       className={cx(
-        'w-[292px] sm:none duration-175 linear fixed !z-50 flex min-h-full flex-col bg-white pb-10 shadow-2xl shadow-white/5 transition-all dark:!bg-navy-800 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 -translate-x-96 xl:translate-x-0',
+        'w-[292px] sm:none duration-175 linear fixed !z-50 flex min-h-full flex-col bg-white pb-10 shadow-2xl shadow-white/5 transition-all md:!z-50 lg:!z-50 xl:!z-0 -translate-x-96 xl:translate-x-0',
         isOpenSidebar && '!translate-x-0'
       )}
     >
@@ -56,14 +56,21 @@ export default function Sidebar() {
           </span>
         </Link>
       </div>
-      <div className="mt-[24px] mb-7 h-px bg-gray-300 dark:bg-white/30"></div>
+      <div className="mt-[24px] mb-7 h-px bg-gray-300"></div>
       <ul className="mb-auto pt-1">
         {routes.map((route, index) => {
           return (
             <a href={route.path} key={index}>
               <div className="relative mt-2 mb-5 flex hover:cursor-pointer">
                 <li className="my-[3px] flex cursor-pointer items-center px-8">
-                  <span className={cx('text-gray-400', pathname === route.path && '!text-cool-indigo-500')}>{route.icon}</span>
+                  <span
+                    className={cx(
+                      'text-gray-400',
+                      pathname === route.path && '!text-cool-indigo-500'
+                    )}
+                  >
+                    {route.icon}
+                  </span>
                   <p className="leading-1 flex ms-4 font-medium text-gray-500">
                     {route.name}
                   </p>

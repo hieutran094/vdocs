@@ -16,7 +16,7 @@ export default function Header() {
       <div className="relative mt-[3px] flex h-[56px] w-[355px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 md:w-[365px] md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
         <div className="flex h-full w-full items-center rounded-full bg-gray-50 text-gray-700">
           <p className="pl-3 pr-2 text-xl">
-            <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 dark:text-white"></MagnifyingGlassIcon>
+            <MagnifyingGlassIcon className="h-4 w-4 text-gray-400"></MagnifyingGlassIcon>
           </p>
           <input
             type="text"
@@ -26,14 +26,14 @@ export default function Header() {
         </div>
         <span
           onClick={() => setIsOpenSidebar(!isOpenSidebar)}
-          className="flex cursor-pointer text-xl text-gray-600 dark:text-white xl:hidden"
+          className="flex cursor-pointer text-xl text-gray-600 xl:hidden"
         >
           <Bars3Icon className="h-5 w-5"></Bars3Icon>
         </span>
         <div className="relative flex">
           <div className="flex">
             <p className="cursor-pointer">
-              <BellAlertIcon className="h-4 w-4 text-gray-600 dark:text-white"></BellAlertIcon>
+              <BellAlertIcon className="h-4 w-4 text-gray-600"></BellAlertIcon>
             </p>
           </div>
         </div>
