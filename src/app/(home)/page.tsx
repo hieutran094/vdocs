@@ -2,8 +2,34 @@ import ArticleCard from '@/app/components/ArticleCard';
 import MiniArticleCard from '@/app/components/MiniArticleCard';
 import { getAllPost, searchCategory } from '../actions';
 
+const siteUrl = process.env.SITE_URL!;
 export const runtime = 'edge';
-
+export const metadata = {
+  title: {
+    default: 'Devdocs',
+    template: `%s | Devdocs`,
+  },
+  description: 'Devdocs is an open source blog application for developer.',
+  keywords: [
+    'Next.js',
+    'React',
+    'Tailwind CSS',
+    'Tech blog',
+    'Cloudflare',
+    'Serverless',
+  ],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: siteUrl,
+    title: 'Devdocs',
+    description: 'Devdocs is an open source blog application for developer',
+    siteName: 'Devdocs',
+  },
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
 export default async function Page() {
   const posts = await getAllPost();
   const categories = await searchCategory({

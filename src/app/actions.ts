@@ -31,7 +31,7 @@ const baseQuerySchema = object({
   page: number().min(1).optional().default(1),
 });
 
-type BaseScheme = zod.infer<typeof baseQuerySchema>;
+type BaseQueryScheme = zod.infer<typeof baseQuerySchema>;
 
 const schema = object({
   email: string().min(1).email(),
@@ -108,8 +108,7 @@ export async function login(_currentState: unknown, formData: FormData) {
       role,
       imageUrl,
     },
-    process.env.APP_KEY!,
-    { algorithm: 'HS256' }
+    process.env.APP_KEY!
   );
 
   cookies().set('token', token, {
@@ -154,7 +153,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
 export async function getAllCategory() {
   return await db.select().from(categoryTable).all();
 }
-export async function searchCategory(query: BaseScheme) {
+export async function searchCategory(query: BaseQueryScheme) {
   const categories = await db
     .select()
     .from(categoryTable)
