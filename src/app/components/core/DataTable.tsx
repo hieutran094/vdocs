@@ -23,7 +23,7 @@ export default function DataTable<T>(props: {
         {props.data.map((row, index) => (
           <tr
             key={'row' + index}
-            className="odd:bg-white odd:dark:bg-gray-700 even:bg-gray-50 even:dark:bg-gray-700 border-b"
+            className="bg-white border-b"
           >
             {props.columns.map((col, cIndex) => {
               if (col.children) {

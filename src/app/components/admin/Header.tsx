@@ -1,18 +1,21 @@
 'use client';
-import { useAppContext } from '@/app/context/app.context';
-import { BellAlertIcon } from '@heroicons/react/24/solid';
-import { Bars3Icon } from '@heroicons/react/24/solid';
-import { UserCircleIcon } from '@heroicons/react/24/solid';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import {
+  BellAlertIcon,
+  Bars3Icon,
+  UserCircleIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import cx from 'classnames';
+import { useAppContext } from '@/app/context/app.context';
+import { logout } from '@/app/actions';
 
 export default function Header() {
-  const { isOpenSidebar, setIsOpenSidebar } = useAppContext();
+  const { setIsLoading } = useAppContext();
+  const { isOpenSidebar, setIsOpenSidebar, loginUser } = useAppContext();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-end rounded-xl bg-white/20 p-2 backdrop-blur-xl">
-      
       <div className="relative mt-[3px] flex h-[56px] w-[355px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 md:w-[365px] md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
         <div className="flex h-full w-full items-center rounded-full bg-gray-50 text-gray-700">
           <p className="pl-3 pr-2 text-xl">
@@ -54,24 +57,25 @@ export default function Header() {
               <div className="mt-3 ml-4">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-gray-600">
-                    👋 Hey, Admin
+                    👋 Hey, {loginUser?.username}
                   </p>
                 </div>
               </div>
               <div className="mt-3 h-px w-full bg-gray-200"></div>
-              <div className="my-3 ml-4 flex flex-col">
-                <a
-                  href=" "
-                  className="text-sm text-gray-700"
-                >
+              <div className="my-3 ml-4 flex flex-col gap-y-3">
+                <button className="py-0.5 text-start text-sm text-gray-700">
                   Profile Settings
-                </a>
-                <a
-                  href=" "
-                  className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
+                </button>
+                <button
+                  onClick={async () => {
+                    setIsLoading(true);
+                    await logout();
+                    setIsLoading(false);
+                  }}
+                  className="py-0.5 text-start text-sm font-medium text-red-500 hover:text-red-500"
                 >
                   Log Out
-                </a>
+                </button>
               </div>
             </div>
           </div>

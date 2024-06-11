@@ -1,9 +1,8 @@
 'use server';
-import { and, count, eq, inArray } from 'drizzle-orm';
+import { count, eq, inArray } from 'drizzle-orm';
 import zod, { object, string, any, number } from 'zod';
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
-import { sign, verify, decode } from '@tsndr/cloudflare-worker-jwt';
 import { ulid } from 'ulidx';
 import { db } from '@/database';
 import {
@@ -14,7 +13,7 @@ import {
 } from '@/database/schema';
 import { hmacPassword } from '@/utils/hmacPassword';
 import { getFileExtension, r2 } from '@/r2';
-import { formData2Json, validationToken } from '@/utils/common';
+import { formData2Json, generateToken } from '@/utils/common';
 import { checkAuth } from '@/libs/auth';
 
 const MAX_FILE_SIZE = 2000000;
@@ -99,9 +98,9 @@ export async function login(_currentState: unknown, formData: FormData) {
     };
   }
   const { username, email, id, role, imageUrl } = loginUser;
-  const token = await sign(
+
+  const token = await generateToken(
     {
-      exp: Math.floor(Date.now() / 1000) + Number(24) * (60 * 60),
       username,
       email,
       id,
@@ -113,6 +112,7 @@ export async function login(_currentState: unknown, formData: FormData) {
 
   cookies().set('token', token, {
     httpOnly: true,
+    maxAge: 60 * 60 * 24,
   });
   redirect('/dashboard');
 }
@@ -150,6 +150,26 @@ export async function signup(_currentState: unknown, formData: FormData) {
   }
 }
 
+export async function getProfile() {
+  const loginUser = await checkAuth();
+  if (!loginUser) {
+    throw new Error('You must be signed in to perform this action');
+  }
+  return await db.query.userTable.findFirst({
+    columns: {
+      id: true,
+      username: true,
+      email: true,
+      role: true,
+      imageUrl: true,
+    },
+    where: eq(userTable.id, loginUser.id),
+  });
+}
+export async function logout() {
+  cookies().delete('token');
+  redirect('/login');
+}
 export async function getAllCategory() {
   return await db.select().from(categoryTable).all();
 }

@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   if (token && isPrivatePath) {
     try {
       await checkAuth();
-    } catch (_) {
+    } catch {
       const response = NextResponse.redirect(new URL('/login', request.url));
       response.cookies.delete('token');
       return response;

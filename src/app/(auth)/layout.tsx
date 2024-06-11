@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Toaster } from 'sonner';
-import { cookies } from 'next/headers';
 import '@/styles/globals.css';
 import AppProvider from '@/app/context/app.context';
 import Loading from '@/app/components/Loading';
@@ -17,14 +16,12 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const token = cookies().get('token');
-
   return (
     <html lang="en">
       <body className={inter.className}>
         <div className="min-h-screen overflow-hidden">
           <Toaster position="top-right" richColors></Toaster>
-          <AppProvider initToken={token?.value}>
+          <AppProvider>
             <Loading />
             <div className="flex flex-col mt-12 md:mt-24 items-center justify-center px-6 py-8 mx-auto lg:py-0">
               <div className="flex">

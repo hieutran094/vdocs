@@ -7,6 +7,7 @@ import AppProvider from '@/app/context/app.context';
 import Sidebar from '@/app/components/admin/Sidebar';
 import Header from '@/app/components/admin/Header';
 import Loading from '@/app/components/Loading';
+import { getProfile } from '@/app/actions';
 
 export const metadata: Metadata = {
   title: 'DevDocs - Admin',
@@ -14,19 +15,20 @@ export const metadata: Metadata = {
 };
 
 const inter = Inter({ subsets: ['latin'] });
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const token = cookies().get('token');
+  const loginUser = await getProfile();
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <div className="min-h-screen h-full">
           <Toaster position="top-right" richColors></Toaster>
-          <AppProvider initToken={token?.value}>
+          <AppProvider initToken={token?.value} initLoginUser={loginUser}>
             <Loading />
             <div className="flex w-full h-full min-h-[inherit] overflow-hidden overflow-y-auto">
               <Sidebar></Sidebar>
