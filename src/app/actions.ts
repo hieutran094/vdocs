@@ -1,5 +1,5 @@
 'use server';
-import { count, eq, inArray } from 'drizzle-orm';
+import { and, count, eq, inArray } from 'drizzle-orm';
 import zod, { object, string, any, number } from 'zod';
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
@@ -15,6 +15,7 @@ import { hmacPassword } from '@/utils/hmacPassword';
 import { getFileExtension, r2 } from '@/r2';
 import { formData2Json, generateToken } from '@/utils/common';
 import { checkAuth } from '@/libs/auth';
+import { EUserRole } from '@/enums';
 
 const MAX_FILE_SIZE = 2000000;
 const CDN_URL = process.env.CDN_URL || '';
@@ -26,11 +27,16 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const baseQuerySchema = object({
-  limit: number().min(1).max(100).optional().default(10),
+  limit: number().min(1).max(1000).optional().default(10),
   page: number().min(1).optional().default(1),
 });
 
 type BaseQueryScheme = zod.infer<typeof baseQuerySchema>;
+
+const postQuerySchema = baseQuerySchema.extend({
+  authorId: string().ulid().optional(),
+});
+type PostQuerySchema = zod.infer<typeof postQuerySchema>;
 
 const schema = object({
   email: string().min(1).email(),
@@ -50,6 +56,7 @@ const createPostSchema = object({
   summary: string(),
   content: string().min(1),
   categoryIds: string().array().min(1),
+  published: number({ coerce: true }).optional(),
   eyeCatchImageFile: any()
     .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 2MB.`)
     .refine(
@@ -235,6 +242,9 @@ export async function createPost(_: unknown, formData: FormData) {
     });
     try {
       delete data.eyeCatchImageFile;
+      if (loginUser.role !== EUserRole.ADMIN) {
+        delete data.published;
+      }
       const id = ulid();
       const postCategories = data.categoryIds.map((categoryId) => ({
         postId: id,
@@ -256,7 +266,8 @@ export async function createPost(_: unknown, formData: FormData) {
     }
     return {
       success: true,
-      message: 'Create new post successfully',
+      message:
+        'Your article is currently under review. We appreciate your patience and will notify you as soon as the review process is complete. Thank you for your understanding.',
     };
   } catch (e) {
     const { message } = e as unknown as Error;
@@ -288,8 +299,19 @@ export async function updatePost(_: unknown, formData: FormData) {
       };
     }
     const { data } = validatedFields;
-
     const postId = data.id;
+    const sqlQuery = [];
+    if (loginUser.role !== EUserRole.ADMIN) {
+      sqlQuery.push(eq(postTable.authorId, loginUser.id));
+      const currentPost = db.query.postTable.findFirst({
+        where: and(eq(postTable.id, postId), ...sqlQuery),
+      });
+      if (!currentPost) {
+        throw new Error("You don't have permission to do this action!");
+      }
+      delete data.published;
+    }
+
     let r2Object;
     if (data.eyeCatchImageFile) {
       const uuid = crypto.randomUUID();
@@ -300,7 +322,6 @@ export async function updatePost(_: unknown, formData: FormData) {
         httpMetadata: { contentType: type },
       });
     }
-
     try {
       delete data.eyeCatchImageFile;
       const postInsertQuery = db
@@ -309,7 +330,7 @@ export async function updatePost(_: unknown, formData: FormData) {
           ...data,
           ...(r2Object ? { eyeCatchImageUrl: r2Object.key } : {}),
         })
-        .where(eq(postTable.id, postId));
+        .where(and(eq(postTable.id, postId), ...sqlQuery));
       await db.batch([postInsertQuery]);
     } catch (err) {
       if (r2Object) await r2.delete(r2Object.key);
@@ -332,7 +353,7 @@ export async function getOnePost(id: string) {
   const [post] = await db
     .select()
     .from(postTable)
-    .where(eq(postTable.id, id))
+    .where(and(eq(postTable.id, id)))
     .limit(1);
   if (!post) {
     return notFound();
@@ -341,7 +362,7 @@ export async function getOnePost(id: string) {
     with: {
       category: true,
     },
-    where: eq(postCategoryTable.postId, id),
+    where: and(eq(postCategoryTable.postId, id)),
   });
   return {
     ...post,
@@ -359,7 +380,7 @@ export async function getOnePostBySlug(slug: string) {
         },
       },
     },
-    where: eq(postTable.slug, slug),
+    where: and(eq(postTable.slug, slug), eq(postTable.published, 1)),
   });
 
   if (!post) {
@@ -384,7 +405,17 @@ export async function deleteOnPost(id: string) {
     if (!loginUser) {
       throw new Error('You must be signed in to perform this action');
     }
-    await db.delete(postTable).where(eq(postTable.id, id));
+    const sqlQuery = [];
+    if (loginUser.role !== EUserRole.ADMIN) {
+      sqlQuery.push(eq(postTable.authorId, loginUser.id));
+      const currentPost = db.query.postTable.findFirst({
+        where: and(eq(postTable.id, id), ...sqlQuery),
+      });
+      if (!currentPost) {
+        throw new Error("You don't have permission to do this action!");
+      }
+    }
+    await db.delete(postTable).where(and(eq(postTable.id, id), ...sqlQuery));
     return {
       success: true,
       message: 'Delete successfuly.',
@@ -397,8 +428,68 @@ export async function deleteOnPost(id: string) {
     };
   }
 }
+export async function searchPost(query: PostQuerySchema) {
+  try {
+    const loginUser = await checkAuth();
+
+    if (!loginUser) {
+      throw new Error('You must be signed in to perform this action');
+    }
+    const validatedFields = postQuerySchema.safeParse(query);
+
+    if (!validatedFields.success) {
+      return {
+        success: false,
+        message: 'Bad query options',
+        errors: validatedFields.error.flatten().fieldErrors,
+      };
+    }
+    const { data } = validatedFields;
+    let authorId = data.authorId;
+    if (loginUser.role !== EUserRole.ADMIN) {
+      authorId = loginUser.id;
+    }
+    const sqlQuery = [];
+    if (authorId) {
+      sqlQuery.push(eq(postTable.authorId, authorId));
+    }
+    const posts = await db.query.postTable.findMany({
+      with: {
+        author: {
+          columns: {
+            username: true,
+          },
+        },
+      },
+      where: and(...sqlQuery),
+      limit: data.limit,
+      offset: data.limit * (data.page - 1),
+    });
+    return {
+      success: true,
+      message: '',
+      data: posts,
+    };
+  } catch (e) {
+    const { message } = e as unknown as Error;
+    return {
+      success: false,
+      message: message || 'Internal Server Error',
+    };
+  }
+}
 export async function getAllPost() {
-  const posts = await db.select().from(postTable).all();
+  const posts = await db.query.postTable.findMany({
+    with: {
+      author: {
+        columns: {
+          username: true,
+        },
+      },
+    },
+    where: and(eq(postTable.published, 1)),
+  });
+
   return posts.map((post) => {
     return {
       ...post,

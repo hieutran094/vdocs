@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm';
+import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import {
   foreignKey,
   integer,
@@ -27,6 +27,8 @@ export const userTable = sqliteTable(
     usernameIdx: uniqueIndex('user_username_idx').on(user.username),
   })
 );
+
+export type User = InferSelectModel<typeof userTable>;
 
 export const categoryTable = sqliteTable(
   'category',
@@ -81,6 +83,12 @@ export const postTable = sqliteTable(
     }).onDelete('cascade'),
   })
 );
+
+export type Post = InferSelectModel<typeof postTable> & {
+  author: {
+    username: string;
+  } | null;
+};
 
 export const postRelations = relations(postTable, ({ one }) => ({
   author: one(userTable, {

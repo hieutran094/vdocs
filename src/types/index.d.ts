@@ -5,3 +5,9 @@ export type LoginUser = {
   role: number | null;
   imageUrl: string | null;
 };
+
+export type ActionResponse<T = unknown> = {
+  success: boolean;
+  message: string;
+  data: T;
+};

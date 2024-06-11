@@ -3,6 +3,7 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { CloudArrowUpIcon } from '@heroicons/react/24/solid';
 import slugify from 'slugify';
 import { toast } from 'sonner';
+import { redirect } from 'next/navigation';
 import TextInput from '@/app/components/core/TextInput';
 import TextEditor from '@/app/components/core/TextEditor';
 import { useFormState } from 'react-dom';
@@ -12,7 +13,7 @@ import TextArea from '@/app/components/core/TextArea';
 import CheckBox from '@/app/components/core/CheckBox';
 import Button from '@/app/components/core/Button';
 import { useAppContext } from '@/app/context/app.context';
-import { redirect } from 'next/navigation';
+import { EUserRole } from '@/enums';
 
 export const runtime = 'edge';
 
@@ -26,12 +27,13 @@ interface IProps {
     content: string;
     categoryIds: string[];
     eyeCatchImageUrl: string;
+    published?: number | null;
   };
   categories: any[];
   action: 'create' | 'update';
 }
 export default function PostForm(props: IProps) {
-  const { setIsLoading } = useAppContext();
+  const { setIsLoading, loginUser } = useAppContext();
   const [formData, setFormData] = useState(props.data);
 
   const [submitState, formAction] = useFormState(
@@ -161,6 +163,23 @@ export default function PostForm(props: IProps) {
           </p>
         )}
       </div>
+      {loginUser?.role === EUserRole.ADMIN && (
+        <div className="w-full">
+          <label className="mb-2 block text-sm font-semibold text-gray-700">
+            Published
+          </label>
+          <div className="w-full flex flex-wrap gap-3">
+            <CheckBox
+              name="published"
+              label="Public"
+              value="1"
+              defaultChecked={formData.published === 1}
+              onChange={() => {}}
+            ></CheckBox>
+          </div>
+        </div>
+      )}
+
       <input
         name="content"
         value={formData.content}

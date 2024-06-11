@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useCallback, useEffect, useState } from 'react';
-import { deleteOnPost } from '@/app/actions';
-import { getAllPost } from '@/app/actions';
+import { deleteOnPost, searchPost } from '@/app/actions';
 import DataTable from '@/app/components/core/DataTable';
 import { useAppContext } from '@/app/context/app.context';
+import { Post } from '@/database/schema';
 
 export const runtime = 'edge';
 
@@ -39,14 +39,18 @@ function RowAction(props: {
 
 export default function AdminPostPage() {
   const { setIsLoading } = useAppContext();
-  const [posts, setPosts] = useState<Awaited<ReturnType<typeof getAllPost>>>(
-    []
-  );
-
+  const [posts, setPosts] = useState<Array<Post>>([]);
   const getPosts = useCallback(async () => {
     setIsLoading(true);
-    const result = await getAllPost();
-    setPosts(result);
+    const result = await searchPost({
+      limit: 1000,
+      page: 1,
+    });
+    if (result.success && result.data) {
+      setPosts(result.data);
+    } else {
+      toast.error(result.message);
+    }
     setIsLoading(false);
   }, []);
   type TTableRow = (typeof posts)[0];
@@ -54,6 +58,15 @@ export default function AdminPostPage() {
     {
       name: 'Title',
       selector: (row: TTableRow) => row.title,
+    },
+    {
+      name: 'Status',
+      selector: (row: TTableRow) =>
+        row.published ? 'Published' : 'Unpublished',
+    },
+    {
+      name: 'Author',
+      selector: (row: TTableRow) => row.author?.username,
     },
     {
       name: 'Action',
