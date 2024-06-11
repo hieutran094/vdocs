@@ -40,8 +40,12 @@ export default function ArticleCard({ data, className }: IProps) {
                   <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center @lg:w-8 @lg:h-8">
                     <UserIcon className="w-4 h-4 text-gray-500 @lg:w-6 @lg:h-6"></UserIcon>
                   </div>
-                  <p className="text-xs font-light @lg:text-sm">Admin</p>
-                  <p className="text-xs font-light @lg:text-sm">• 2024/05/05</p>
+                  <p className="text-xs font-light @lg:text-sm">
+                    {data.author?.username}
+                  </p>
+                  <p className="text-xs font-light @lg:text-sm">
+                    • {new Date(data.createdAt!).toISOString().substring(0, 10)}
+                  </p>
                 </div>
               </Link>
             </div>

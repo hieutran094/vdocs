@@ -1,5 +1,6 @@
 import { UserIcon } from '@heroicons/react/24/outline';
 import cx from 'classnames';
+import Link from 'next/link';
 interface IProps {
   data: any;
   className?: string;
@@ -20,20 +21,22 @@ export default function MiniArticleCard({ data, className }: IProps) {
       />
       <div className="flex flex-col justify-between flex-1">
         <div className="flex-1">
-          <a className="block" href="/resources/cruip-bundle">
+          <Link className="block group" href={`/posts/${data.slug}`}>
             <div className="flex items-center justify-between">
               <h3 className="flex items-center text-sm font-bold leading-5 text-gray-700">
                 {data.title}
               </h3>
             </div>
-          </a>
+          </Link>
         </div>
         <div className="flex flex-wrap mt-1 items-center gap-x-3 gap-y-1">
           <div className="w-6 h-6 rounded-full flex items-center justify-center border border-gray-200">
             <UserIcon className="w-4 h-4 text-gray-500"></UserIcon>
           </div>
-          <p className="text-xs font-light">Admin</p>
-          <p className="text-xs font-light">2024/05/05</p>
+          <p className="text-xs font-light">{data.author?.username}</p>
+          <p className="text-xs font-light">
+            {new Date(data.createdAt!).toISOString().substring(0, 10)}
+          </p>
         </div>
       </div>
     </div>
