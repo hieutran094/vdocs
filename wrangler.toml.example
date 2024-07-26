@@ -1,4 +1,4 @@
-name = "devdocs"
+name = "vdocs"
 compatibility_date = "2024-05-29"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
@@ -10,7 +10,7 @@ CDN_URL="https://cdn.example.com/"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "devdocs"
+database_name = "vdocs"
 database_id = "xxxxx"
 migrations_table = "migrations"
 migrations_dir = "./src/migrations"
@@ -18,4 +18,4 @@ migrations_dir = "./src/migrations"
 
 [[r2_buckets]]
 binding = 'BUCKET'
-bucket_name = 'devdocs'
+bucket_name = 'vdocs'

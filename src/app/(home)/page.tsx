@@ -38,7 +38,7 @@ export default async function Page() {
   });
   return (
     <>
-      <div className="max-w-lg px-4 pt-5 mx-auto md:max-w-screen-2xl md:px-6 xl:px-8 2xl:px-12">
+      <div className="max-w-lg px-4 pt-5 mx-auto md:max-w-screen-xl md:px-6 xl:px-8 2xl:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 g gap-x-6 gap-y-6 xl:gap-x-8 xl:gap-y-8 2xl:gap-x-12 2xl:gap-y-12">
           <ArticleCard data={posts[0]}></ArticleCard>
           <div className="grid gap-x-6 gap-y-6 grid-cols-2 xl:gap-x-8 xl:gap-y-8 2xl:gap-x-12 2xl:gap-y-12">
@@ -72,7 +72,7 @@ export default async function Page() {
           </div>
         </div>
       </div>
-      <div className="max-w-lg px-4 pt-5 mx-auto md:max-w-screen-2xl md:px-6 xl:px-8 2xl:px-12">
+      <div className="max-w-lg px-4 pt-5 mx-auto md:max-w-screen-xl md:px-6 xl:px-8 2xl:px-12">
         <div className="w-full flex items-center justify-between">
           <h2 className="text-md font-semibold text-gray-700">Tredding</h2>
           <button className="px-2.5 py-2 bg-transparent border border-gray-200 text-xs rounded-md">
@@ -90,7 +90,7 @@ export default async function Page() {
           })}
         </div>
       </div>
-      <div className="max-w-lg mb-12 px-4 pt-12 mx-auto md:max-w-screen-2xl md:px-6 xl:px-8 2xl:px-12 md:pt-20">
+      <div className="max-w-lg mb-12 px-4 pt-12 mx-auto md:max-w-screen-xl md:px-6 xl:px-8 2xl:px-12 md:pt-20">
         <div className="w-full flex flex-col md:flex-row gap-x-6 gap-y-6 xl:gap-x-8 xl:gap-y-8 2xl:gap-x-12 2xl:gap-y-12">
           <div className="md:basis-2/3">
             <div className="w-full flex mb-5 items-center justify-between">

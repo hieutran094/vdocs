@@ -51,9 +51,11 @@ export default function Sidebar() {
           className="font-black font-display text-cool-indigo-800 text-3xl"
           href="/"
         >
-          <span className="inline-block">
-            Dev<span className="text-cool-indigo-600">Docs</span>
-          </span>
+          <img
+            className="h-9 w-auto md:h-10"
+            alt="logo"
+            src="/images/text-logo.webp"
+          />
         </Link>
       </div>
       <div className="mt-[24px] mb-7 h-px bg-gray-300"></div>

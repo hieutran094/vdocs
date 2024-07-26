@@ -6,7 +6,7 @@ module.exports = {
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
-        primary: 'rgb(79 85 193 / 1)',
+        primary: '#1F1F1F',
         'cool-indigo': {
           50: ' rgb(204 210 241 / 1)',
           100: 'rgb(226 229 247 / 1)',

@@ -26,9 +26,11 @@ export default function AuthLayout({
             <div className="flex flex-col mt-12 md:mt-24 items-center justify-center px-6 py-8 mx-auto lg:py-0">
               <div className="flex">
                 <h1 className="-mt-15 mb-5 text-4xl font-extrabold tracking-tight font-display sm:text-3xl md:text-4xl xl:text-5xl">
-                  <span className="block xl:inline">
-                    Dev<span className="text-cool-indigo-600">Docs</span>
-                  </span>
+                  <img
+                    className="h-14 w-auto md:h-16"
+                    alt="logo"
+                    src="/images/text-logo.webp"
+                  />
                 </h1>
               </div>
               {children}

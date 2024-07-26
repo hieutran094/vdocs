@@ -14,7 +14,7 @@ export default function Header() {
     <div className="relative mt-16 overflow-hidden md:mt-18 bg-gradient-to-b from-gray-50 to-white">
       <div className="relative pb-4">
         <nav className="backdrop-filter backdrop-blur-xl border-b border-slate-900/5 z-10 bg-gray-50/90 fixed top-0 w-full">
-          <div className="px-2 mx-auto max-w-screen-2xl sm:px-4 lg:px-8">
+          <div className="px-2 mx-auto max-w-screen-xl sm:px-4 lg:px-8">
             <div className="flex justify-between h-16 md:h-18">
               <div className="flex px-2 lg:px-0">
                 <div className="flex items-center flex-shrink-0">
@@ -22,13 +22,15 @@ export default function Header() {
                     className="inline-flex items-center font-black font-display text-cool-indigo-800 text-xl"
                     href="/"
                   >
-                    <span className="inline-block">
-                      Dev<span className="text-cool-indigo-600">Docs</span>
-                    </span>
+                    <img
+                      className="h-9 w-auto md:h-10"
+                      alt="logo"
+                      src="/images/text-logo.webp"
+                    />
                   </Link>
                 </div>
                 <div
-                  className="hidden lg:ml-6 xl:ml-8 lg:flex lg:space-x-8"
+                  className="hidden lg:ml-10 xl:ml-12 lg:flex lg:space-x-8"
                   data-turbo="false"
                 >
                   <a
@@ -67,7 +69,7 @@ export default function Header() {
                       <EnvelopeIcon className="w-5 h-5 text-gray-400"></EnvelopeIcon>
                     </div>
                     <input
-                      className="w-full pl-10 pr-24 py-3.5 border-0 bg-gray-100 border-transparent rounded-full leading-5 transition duration-150 placeholder-gray-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-cool-indigo-600 focus:border-cool-indigo-200 sm:text-sm"
+                      className="w-full pl-10 pr-24 py-3.5 border-0 bg-gray-100 border-transparent rounded-full leading-5 transition duration-150 placeholder-gray-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-cool-indigo-200 sm:text-sm"
                       data-newsletter-target="email"
                       placeholder="Get notified when we have new posts"
                       autoComplete="email"
@@ -75,7 +77,7 @@ export default function Header() {
                     />
                     <button
                       type="submit"
-                      className="absolute inline-flex items-center h-10 px-4 py-2 text-sm text-white transition duration-300 ease-in-out rounded-full outline-none right-1 top-1 bg-cool-indigo-600 md:px-6 sm:font-medium hover:bg-cool-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cool-indigo-500"
+                      className="absolute inline-flex items-center h-10 px-4 py-2 text-sm text-white transition duration-300 ease-in-out rounded-full outline-none right-1 top-1 bg-primary md:px-6 sm:font-medium hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cool-indigo-500"
                     >
                       Subscribe
                     </button>
@@ -83,8 +85,7 @@ export default function Header() {
                 </div>
                 <button
                   type="button"
-                  className="inline-flex items-center px-3 py-2 text-sm leading-4 text-white border border-transparent rounded-full shadow-sm sm:hidden bg-cool-indigo-600 hover:bg-cool-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cool-indigo-500"
-
+                  className="inline-flex items-center px-3 py-2 text-sm leading-4 text-white border border-transparent rounded-full shadow-sm sm:hidden bg-primary hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cool-indigo-500"
                 >
                   <EnvelopeIcon className="-ml-0.5 mr-2 h-4 w-4"></EnvelopeIcon>
                   Get new post
@@ -94,7 +95,7 @@ export default function Header() {
               <div className="flex items-center">
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center p-2 ml-3 text-gray-400 rounded-full lg:hidden hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cool-indigo-500"
+                  className="inline-flex items-center justify-center p-2 ml-3 text-gray-400 rounded-full lg:hidden hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
                   onClick={() => setOpenSidebar(!openSidebar)}
                 >
                   <span className="sr-only">Open main menu</span>

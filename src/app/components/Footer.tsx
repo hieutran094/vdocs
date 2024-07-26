@@ -39,7 +39,7 @@ export default function Footer() {
               </p>
               <p className="mt-5 text-sm text-gray-600">
                 <span className="font-semibold text-gray-700">Email: </span>
-                devdocs@gmail.com
+                vdocs@gmail.com
               </p>
               <p className="mt-2 text-sm text-gray-600">
                 <span className="font-semibold text-gray-700">Phone: </span>
